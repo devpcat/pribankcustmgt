@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/static/css/layui/layui.css}" rel="stylesheet">
+    <link th:href="@{/static/css/style.css}" rel="stylesheet">
+    <link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/static/css/layer/layer.css}" rel="stylesheet">
+    <link th:href="@{/static/css/layui/admin.css}" rel="stylesheet">
+    <link th:href="@{/static/css/element-ui.2.13.0.css}" rel="stylesheet">
+    <link th:href="@{/static/css/font-awesome.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="layui-fluid" id="app">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+
+            <div style="padding-bottom: 50px" class="form-group">
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-top: 0px" class="control-label">客户姓名</label>
+                    <input class="form-control" style="width: 100%;"
+                           type="text" placeholder="客户姓名" v-model="qrycustname">
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-top: 0px" class="control-label">客户号</label>
+                    <input class="form-control" style="width: 100%;"
+                           type="text" placeholder="客户号" v-model="qrycustcino">
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <label style="padding-top: 0px" class="control-label">客户经理编号</label>
+                    <input class="form-control" style="width: 100%;"
+                           type="text" placeholder="客户经理编号" v-model="qrymarketer">
+                </div>
+                <div class="col-sm-1 col-md-1 col-lg-1">
+                    <span @click="qryCust()" class="btn btn-primary" style="margin-top: 20px">查询</span>
+                </div>
+                <div class="col-sm-1 col-md-1 col-lg-1">
+                    <span @click="addCust()" class="btn btn-primary" style="margin-top: 20px">新增</span>
+                </div>
+                <div class="col-sm-1 col-md-1 col-lg-1">
+                    <span @click="remind()" class="btn btn-primary" style="margin-top: 20px">提醒</span>
+                </div>
+                <div class="col-sm-1 col-md-1 col-lg-1">
+                    <span @click="transfer()" class="btn btn-primary" style="margin-top: 20px">转移</span>
+                </div>
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <el-table
+                            :data="tableData"
+                            style="width: 100%;margin-bottom: 20px;"
+                            row-key="custid"
+                            border
+                            default-expand-all
+                            :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+                            @selection-change="handleSelectionChange">
+                        <el-table-column
+                                type="selection" width="35">
+                        </el-table-column>
+                        <!--<el-table-column label="" width="35">
+                            <template slot-scope="scope">
+                                <el-radio v-model="tableRadio" :label="scope.row"><i></i></el-radio>
+                            </template>
+                        </el-table-column>-->
+                        <el-table-column
+                                prop="nickName"
+                                label="客户经理"
+                                align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="cino"
+                                label="客户号"
+                                align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="姓名"
+                                align="center">
+                        </el-table-column>
+                        <el-table-column
+                                width="100px"
+                                prop="sex"
+                                label="性别"
+                                align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="birth"
+                                label="生日"
+                                align="center">
+                        </el-table-column>
+                        <el-table-column
+                                prop="workunit"
+                                label="工作单位"
+                                align="center" show-overflow-tooltip>
+                        </el-table-column>
+                        <el-table-column
+                                prop="phone1"
+                                label="手机"
+                                align="center">
+                        </el-table-column>
+                        <el-table-column width="230px" label="操作" align="center">
+                            <template slot-scope="scope">
+                                <el-button
+                                        size="mini"
+                                        @click="showDetail(scope.row)">详情
+                                </el-button>
+                                <el-button
+                                        size="mini"
+                                        @click="editDetail(scope.row)">编辑
+                                </el-button>
+                                <el-button
+                                        size="mini"
+                                        type="danger"
+                                        @click="handleDelete(scope.row)">删除
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination
+                            background
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            layout="prev,pager,next,sizes"
+                            :page-sizes="[5, 10, 15, 20]"
+                            :page-size="page_size"
+                            :current-page="current_page"
+                            :total="total">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    var context = [[@{/}]];
+</script>
+<script th:src="@{/static/js/jquery.1.12.4.min.js}"></script>
+<script th:src="@{/static/js/jquery.validate.min.js}"></script>
+<script th:src="@{/static/js/layui/layui.js}"></script>
+<script th:src="@{/static/js/layui/lay/modules/layer.js}"></script>
+<script th:src="@{/static/js/vue.2.6.11.js}"></script>
+<script th:src="@{/static/js/element-ui.2.13.0.js}"></script>
+
+<script>
+    $().ready(function () {
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                tableData: [],
+                total: 50,
+                page_size: 5,
+                current_page: 1,
+                selectArr: [],
+                qrycustname: '',
+                qrycustcino: '',
+                tableRadio: '',
+                qrymarketer: '',
+                currbranchuserarr: []
+            },
+            methods: {
+                showDetail: function (row) {
+                    console.log('showDetail->row=' + JSON.stringify(row));//弹出详情页
+                    layer.open({
+                        type: 2,anim:-1,
+                        isOutAnim: false,
+                        title: '详情',
+                        maxmin: true,
+                        shadeClose: false, // 点击遮罩关闭层
+                        area: ['800px', '700px'],
+                        content: context + 'pbcust/showDetail?userid=' + row.custid,
+                        end: function () {
+                            vm.getUserList();
+                        }
+                    });
+                }, editDetail: function (row) {
+                    console.log('editDetail->row=' + JSON.stringify(row));//弹出详情页
+                    layer.open({
+                        type: 2,anim:-1,
+                        isOutAnim: false,
+                        title: '编辑',
+                        maxmin: true,
+                        shadeClose: false, // 点击遮罩关闭层
+                        area: ['800px', '700px'],
+                        content: context + 'pbcust/editDetail?userid=' + row.custid,
+                        end: function () {
+                            vm.getUserList();
+                        }
+                    });
+                },
+                addCust: function () {
+                    layer.open({
+                        type: 2,anim:-1,
+                        isOutAnim: false,
+                        title: '新增',
+                        maxmin: true,
+                        shadeClose: false, // 点击遮罩关闭层
+                        area: ['800px', '700px'],
+                        content: context + 'pbcust/add',
+                        end: function () {
+                            vm.getUserList();
+                        }
+                    });
+                    //layer.full(curwin);
+                },
+                handleDelete: function (row) {
+                    layer.confirm("您确定要删除吗？", function (index) {
+                        $.ajax({
+                            url: context + 'pbcust/delCust?custid=' + row.custid,
+                            type: 'GET',
+                            success: function (res) {
+                                if (res.code === 200) {
+                                    layer.msg("操作成功");
+                                } else {
+                                    layer.msg("操作失败");
+                                }
+                                vm.getUserList();
+                            }
+                        });
+                    });
+                },
+                handleSizeChange: function (val) {
+                    vm.page_size = val;
+                    this.getUserList();
+                },
+                handleCurrentChange: function (val) {
+                    vm.current_page = val;
+                    this.getUserList();
+                }, getUserList: function () {
+                    $.ajax({
+                        url: context + 'pbcust/getCustInfo?page=' + this.current_page + '&page_size=' + this.page_size + '&qrycustcino=' + vm.qrycustcino + '&qrycustname=' + vm.qrycustname + '&region=2&qrymarketer=' + vm.qrymarketer,
+                        type: 'GET',
+                        success: function (res) {
+                            console.log(JSON.stringify(res));
+                            if (res.code == 200) {
+                                vm.tableData = res.data.userList;
+                                vm.total = res.data.total;
+                                vm.page_size = res.data.page_size;
+                                vm.current_page = res.data.page;
+                            } else {
+                                layer.msg(res.message);
+                            }
+                        }
+                    });
+                },
+                handleSelectionChange: function (val) {
+                    console.log(val);
+                    this.selectArr = val;
+                }, transfer: function () {//转移客户的信息
+                    if (this.selectArr.length < 1) {
+                        layer.alert('请至少选择一行', {icon: 2});
+                        return;
+                    }
+                    layer.prompt({
+                        formType: 3,
+                        // placeholder: '输入注销原因',
+                        title: '请选择转移至的客户经理'//,
+                        //area: ['800px', '550px'] //自定义文本域宽高
+                    }, function (value, index, elem) {
+
+                        var newcustmgt = $("#selectCustManager").val();
+
+                        //将数据送回后台
+                        $.ajax({
+                            cache: true,
+                            type: "POST",
+                            url: context + 'pbuser/changeCustManager',
+                            data: JSON.stringify({
+                                newcustmgt: newcustmgt,
+                                custlist: vm.selectArr
+                            }),
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            error: function (request) {
+                                layer.alert("Connection error");
+                            },
+                            success: function (data) {
+                                console.log(JSON.stringify(data));
+                                if (data.code === 200) {
+                                    layer.msg("操作成功");
+                                    layer.close(index);
+                                    vm.getUserList();
+                                }
+                            }
+                        });
+                    });//function
+
+                    //拉取待转移客户的下拉菜单
+                    $.ajax({
+                        url: context + 'pbuser/getCurrentBranchUser',
+                        type: 'GET',
+                        success: function (res) {
+                            console.log(JSON.stringify(res));
+                            vm.currbranchuserarr = res.data;
+                            var html = "";
+                            var i;
+                            for (i = 0; i < vm.currbranchuserarr.length; i++) {
+                                //console.log(JSON.stringify(elem));
+                                html += "<option value='" + vm.currbranchuserarr[i].name + "'>" + vm.currbranchuserarr[i].nick_name + "</option>";
+                            }
+                            console.log(html);
+                            $(".layui-layer-content").append("<select id='selectCustManager' lay-search='' lay-verify='required' style='width: 100%;height: 33.9px;border: 1px solid #ccc;border-radius: 4px;box-shadow: rgba(0, 0, 0, 0.075) 0px 1px 1px inset'>" + html + "</select>");
+                        }
+                    });
+
+                    $(".layui-layer-content .layui-layer-input").val('666');
+                    $(".layui-layer-content .layui-layer-input").hide();
+                    $(".layui-layer-content").css({'height': '300px', 'width': '400px', "padding-top": '0px'});
+                    $(".layui-layer-content").append("<br/>客户经理姓名");
+
+                }, remind: function () {
+                    if (this.selectArr.length != 1) {
+                        layer.alert('请选择一行', {icon: 2});
+                        return;
+                    }
+                    layer.prompt({
+                        formType: 3,
+                        // placeholder: '输入注销原因',
+                        title: '请输入待提醒信息'//,
+                        //area: ['800px', '550px'] //自定义文本域宽高
+                    }, function (value, index, elem) {
+                        if ('' == $("#test1").val()) {
+                            layer.alert('日期必填', {icon: 2});
+                            return;
+                        }
+                        if ('' == $("#test2").val()) {
+                            layer.alert('主题必填', {icon: 2});
+                            return;
+                        }
+                        if ('' == $("#test3").val()) {
+                            layer.alert('内容必填', {icon: 2});
+                            return;
+                        }
+
+                        //将数据送回后台
+                        $.ajax({
+                            cache: true,
+                            type: "POST",
+                            url: context + 'pbuser/setRemind',
+                            data: JSON.stringify({
+                                custid: vm.selectArr[0].custid,
+                                custname: vm.selectArr[0].name,
+                                eventname: $("#test2").val(),
+                                eventcontent: $("#test3").val(),
+                                eventdate: $("#test1").val()
+                            }),
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            error: function (request) {
+                                parent.layer.alert("Connection error");
+                            },
+                            success: function (data) {
+                                console.log(JSON.stringify(data));
+                                if (data.code === 200) {
+                                    parent.layer.msg("操作成功");
+                                    layer.close(index);
+                                }
+                            }
+                        });
+                        /*alert($("#test1").val()); //得到value
+                        alert($("#test2").val()); //得到value
+                        alert($("#test3").val()); //得到value*/
+                    });
+                    $(".layui-layer-content .layui-layer-input").val('666');
+                    $(".layui-layer-content .layui-layer-input").hide();
+                    $(".layui-layer-content").css({'height': '300px', 'width': '400px', "padding-top": '0px'});
+                    $(".layui-layer-content").append("<br/>提醒日期");
+                    $(".layui-layer-content").append("<input class=\"form-control\" id=\"test1\" placeholder=\"请选择提醒日期\" style=\"width: 100%\" type=\"text\">");
+                    $(".layui-layer-content").append("<br/>提醒主题");
+                    $(".layui-layer-content").append("<input type=\"text\" id= \"test2\" class=\"layui-input\" placeholder=\"请输入提醒主题\"/>");
+                    $(".layui-layer-content").append("<br/>提醒内容");
+                    $(".layui-layer-content").append("<textarea type=\"text\" id= \"test3\" class=\"layui-input\" placeholder=\"请输入提醒内容\"/>");
+                    $("#test1").css("width", "355px");
+                    $("#test2").css({"width": "355px", "margin-top": "0"});
+                    $("#test3").css({'height': '100px', 'width': '355px', "margin-top": "0"});
+                    layui.use('laydate', function () {
+                        var laydate = layui.laydate;
+                        //console.log(JSON.stringify(laydate));
+                        //常规用法
+                        laydate.render({
+                            elem: '#test1',
+                            calendar: true
+                        })
+                    });
+                }, qryCust: function () {
+                    console.log(this.qrycustcino);
+                    console.log(this.qrycustname);
+                    this.getUserList();
+                }
+            },
+            mounted: function () {
+
+            }
+        });
+        vm.getUserList();
+    });
+</script>
+
+</body>
+</html>

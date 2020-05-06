@@ -1,0 +1,48 @@
+server:
+  servlet:
+    context-path: /pbcustmgt
+    session:
+      timeout: 1800
+  connection-timeout: 10000
+  port: 8600
+spring:
+  profiles:
+    active: dev
+  mvc:
+    static-path-pattern: /static/**
+  # thymeleaf配置
+  thymeleaf:
+    cache: false
+  session:
+    store-type: none
+  datasource:
+    druid:
+      stat-view-servlet:
+        login-username: admin
+        login-password: 2rtQ56tolp
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  # 关闭mybatis-plus的banner打印
+  global-config:
+    banner: false
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+#登录图形验证码有效时间(单位分钟)/宽度/高度/位数
+loginCode:
+  expiration: 2
+  width: 111
+  height: 36
+  digit: 2
+  maxCacheSize: 10
+# security 配置
+security:
+  #同一账号，最大登录数
+  max-session: 10
+  # 超出最大登录数，是否阻止登录
+  prevents-login: false
+  # 放行url
+

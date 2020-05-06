@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/static/css/layui/layui.css}">
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/static/css/layer/layer.css}">
+    <link rel="stylesheet" th:href="@{/static/css/layui/admin.css}">
+    <link rel="stylesheet" th:href="@{/static/css/element-ui.2.13.0.css}">
+    <link rel="stylesheet" th:href="@{/static/css/font-awesome.min.css}">
+
+    <style type="text/css">
+        .lika:link {
+            color: #FF0000;
+            text-decoration: underline;
+        }
+
+        .lika:visited {
+            color: #00FF00;
+            text-decoration: none;
+        }
+
+        .lika:hover {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .lika:active {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+    </style>
+
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight" id="app">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t">
+                        <fieldset class="layui-elem-field">
+                            <legend style="width: 100px">基本信息</legend>
+                            <div><!--栅格实现一行两个输入项目-->
+
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">客户号</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.cino">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">姓名</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">性别</label>
+                                    <div class="col-sm-8">
+                                        <!--<input class="form-control" style="width: 100%"
+                                               type="text"></div>-->
+                                        <div class="radio-beauty-container" id="sex" style="width: 100%">
+                                            <label>
+                                                <span class="radio-name">男</span>
+                                                <input hidden id="nan" name="sex" type="radio" value="男"
+                                                       v-model="form.baseinfo.sex"/>
+                                                <label class="radio-beauty" for="nan"></label>
+                                            </label>
+                                            <label>
+                                                <span class="radio-name">女</span>
+                                                <input hidden id="nv" name="sex" type="radio" value="女"
+                                                       v-model="form.baseinfo.sex"/>
+                                                <label class="radio-beauty" for="nv"></label>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label"
+                                           style="width: 33%;margin-left: 0">出生年月日</label>
+                                    <div class="col-sm-8">
+                                        <!--<input class="form-control" id="test1" placeholder=""
+                                               style="width: 100%" type="text" v-model="form.baseinfo.birth">-->
+                                        <el-date-picker class="form-control00"
+                                                        placeholder="选择日期"
+                                                        style="width: 100%;height: 34px"
+                                                        type="date"
+                                                        value-format="yyyy-MM-dd"
+                                                        v-model="form.baseinfo.birth">
+                                        </el-date-picker>
+                                        <!--<input type="text" class="layui-input" id="test1" placeholder="yyyy-MM-dd">-->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">年龄</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="getAge">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">工作单位</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.workunit">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">职务</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.position">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">企业性质</label>
+                                    <div class="col-sm-8">
+                                        <!--<input class="form-control" style="width: 100%"
+                                               type="text">-->
+                                        <div class='form-control'
+                                             style="width: 100%;border-width: 0;border-color: white;border-radius: 0;box-shadow: none;padding: 0">
+                                            <select id='qyxz' lay-search='' lay-verify='required' name='qyxz'
+                                                    style='width: 100%;height: 33.9px;border: 1px solid #ccc;border-radius: 4px;box-shadow: rgba(0, 0, 0, 0.075) 0px 1px 1px inset'
+                                                    v-model="form.baseinfo.enterpriseprop">
+                                                <option value='央企'>央企</option>
+                                                <option value='国企'>国企</option>
+                                                <option value='股份制企业'>股份制企业</option>
+                                                <option value='集体企业'>集体企业</option>
+                                                <option value='联营企业'>联营企业</option>
+                                                <option value='私企'>私企</option>
+                                                <option value='外企'>外企</option>
+                                                <option value='个体户'>个体户</option>
+                                                <option selected value='其他'>其他</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">所属行业</label>
+                                    <div class="col-sm-8">
+                                        <!--<input class="form-control" style="width: 100%"
+                                               type="text">-->
+                                        <div class='form-control'
+                                             style="width: 100%;border-width: 0;border-color: white;border-radius: 0;box-shadow: none;padding: 0">
+                                            <select id='sshy' lay-search='' lay-verify='required' name='sshy'
+                                                    style='width: 100%;height: 33.9px;border: 1px solid #ccc;border-radius: 4px;box-shadow: rgba(0, 0, 0, 0.075) 0px 1px 1px inset'
+                                                    v-model="form.baseinfo.industrytype">
+                                                <option value='农、林、牧、渔业'>农、林、牧、渔业</option>
+                                                <option value='采矿业'>采矿业</option>
+                                                <option value='制造业'>制造业</option>
+                                                <option value='电力、热力、燃气及水的生产和供应业'>电力、热力、燃气及水的生产和供应业</option>
+                                                <option value='环境和公共设施管理业'>环境和公共设施管理业</option>
+                                                <option value='建筑业'>建筑业</option>
+                                                <option value='交通运输、仓储业和邮政业'>交通运输、仓储业和邮政业</option>
+                                                <option value='信息传输、计算机服务和软件业'>信息传输、计算机服务和软件业</option>
+                                                <option value='批发和零售业'>批发和零售业</option>
+                                                <option value='住宿、餐饮业'>住宿、餐饮业</option>
+                                                <option value='金融、保险业'>金融、保险业</option>
+                                                <option value='房地产业'>房地产业</option>
+                                                <option value='租赁和商务服务业'>租赁和商务服务业</option>
+                                                <option value='科学研究、技术服务和地质勘查业'>科学研究、技术服务和地质勘查业</option>
+                                                <option value='水利、环境和公共设施管理业'>水利、环境和公共设施管理业</option>
+                                                <option value='居民服务和其他服务业'>居民服务和其他服务业</option>
+                                                <option value='教育'>教育</option>
+                                                <option value='卫生、社会保障和社会服务业'>卫生、社会保障和社会服务业</option>
+                                                <option value='文化、体育、娱乐业'>文化、体育、娱乐业</option>
+                                                <option value='综合（含投资类、主业不明显）'>综合（含投资类、主业不明显）</option>
+                                                <option selected value='其它'>其它</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">家庭住址</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.homeaddr">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label"
+                                           style="width: 33%;margin-left: 0;padding: 0">车辆品牌及型号</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.carbrand">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">车牌号码</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.carno">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">单位电话</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.worktel">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">家庭电话</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.hometel">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">手机1</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.phone1">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">手机2</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.phone2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">电子邮箱</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.email">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">微信号</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 100%"
+                                               type="text" v-model="form.baseinfo.wxno">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label class="col-sm-4 control-label"
+                                           style="width: 33%;margin-left: 0">资金实控人</label>
+                                    <div class="col-sm-8">
+                                        <div class="radio-beauty-container" id="zjskr" style="width: 100%">
+                                            <label>
+                                                <span class="radio-name">是</span>
+                                                <input checked hidden id="zjskrs" name="zjskr" type="radio" value="是"
+                                                       v-model="form.baseinfo.iscontroler"/>
+                                                <label class="radio-beauty" for="zjskrs"></label>
+                                            </label>
+                                            <label>
+                                                <span class="radio-name">否</span>
+                                                <input hidden id="zjskrf" name="zjskr" type="radio" value="否"
+                                                       v-model="form.baseinfo.iscontroler"/>
+                                                <label class="radio-beauty" for="zjskrf"></label>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <!--<label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">家庭住址</label>
+                                    <div class="col-sm-8">
+                                        <input  class="form-control" style="width: 100%"
+                                                type="text">
+                                    </div>-->
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset class="layui-elem-field">
+                            <legend style="width: 100px">深入信息</legend>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label" style="margin-left: -10%">性格描述</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" style="width: 105%"
+                                           type="text" v-model="form.baseinfo.characterdesc">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label" style="margin-left: -10%">收入状况</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" style="width: 105%"
+                                           type="text" v-model="form.baseinfo.incomestate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label" style="margin-left: -10%">兴趣爱好</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" style="width: 105%"
+                                           type="text" v-model="form.baseinfo.hobby">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label" style="margin-left: -10%">最关注的人或事</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" style="width: 105%"
+                                           type="text" v-model="form.baseinfo.interest">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label" style="margin-left: -10%">最需要解决的问题</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" style="width: 105%"
+                                           type="text" v-model="form.baseinfo.problem">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label" style="margin-left: -10%">金融投资偏好</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" style="width: 105%"
+                                           type="text" v-model="form.baseinfo.financialprefer">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label" style="margin-left: -10%">在我行办理业务的习惯</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" style="width: 105%"
+                                           type="text" v-model="form.baseinfo.businessperfer">
+                                </div>
+                            </div>
+
+                            <div style="padding: 0 10px">
+                                <div :key="index" v-for="(elem,index) in form.familyinfo"><!--loop-->
+                                    <fieldset class="layui-elem-field">
+                                        <legend style="width: 210px;font-size: 10px">家庭成员{{index+1}}信息<span
+                                                v-show="isEdit||isAdd"
+                                                @click="addfamily(index,'true')"
+                                                style="color: red"
+                                        >&nbsp;&nbsp;新增成员</span><span v-show="isEdit||isAdd"
+                                                                      @click="addfamily(index,'false')"
+                                                                      style="color: red"
+                                        >&nbsp;&nbsp;删除成员</span>
+                                        </legend>
+
+                                        <div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">关系</label>
+                                                <div class="col-sm-8">
+                                                    <div class='form-control'
+                                                         style="width: 100%;border-width: 0;border-color: white;border-radius: 0;box-shadow: none;padding: 0">
+                                                        <select lay-search='' lay-verify='required'
+                                                                style='width: 100%;height: 33.9px;border: 1px solid #ccc;border-radius: 4px;box-shadow: rgba(0, 0, 0, 0.075) 0px 1px 1px inset'
+                                                                v-model="elem.relation">
+                                                            <option value='父母'>父母</option>
+                                                            <option value='配偶'>配偶</option>
+                                                            <option value='子女'>子女</option>
+                                                            <option value='兄弟'>兄弟</option>
+                                                            <option selected value='其他'>其他</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">姓名</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" style="width: 100%"
+                                                           type="text" v-model="elem.name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">出生日期</label>
+                                                <div class="col-sm-8">
+                                                    <!--<input id="test4" class="form-control" style="width: 100%"
+                                                           type="text" placeholder="" v-model="elem.birth">-->
+                                                    <el-date-picker class="form-control00"
+                                                                    placeholder="选择日期"
+                                                                    style="width: 100%;height: 34px"
+                                                                    type="date"
+                                                                    value-format="yyyy-MM-dd"
+                                                                    v-model="elem.birth">
+                                                    </el-date-picker>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">备注</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" style="width: 100%"
+                                                           type="text" v-model="elem.note">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <fieldset class="layui-elem-field">
+                            <legend style="width: 180px">重要产品持仓信息</legend>
+                            <div style="padding: 0 10px">
+
+                                <div :key="index" v-for="(elem,index) in form.productinfo"><!--loop-->
+                                    <fieldset class="layui-elem-field">
+                                        <legend style="width: 210px;font-size: 10px">产品{{index+1}}持仓信息<span
+                                                v-show="isEdit||isAdd"
+                                                @click="addproduct(index,'true')"
+                                                style="color: red"
+                                        >&nbsp;&nbsp;新增产品</span><span v-show="isEdit||isAdd"
+                                                                      @click="addproduct(index,'false')"
+                                                                      style="color: red"
+                                        >&nbsp;&nbsp;删除产品</span>
+                                        </legend>
+                                        <div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">产品名称</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" style="width: 100%"
+                                                           type="text" v-model="elem.name">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">产品代码</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" style="width: 100%"
+                                                           type="text" v-model="elem.pid">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">金额</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" style="width: 100%"
+                                                           type="text" v-model="elem.amt">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">份额</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" style="width: 100%"
+                                                           type="text" v-model="elem.quotient">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">起息日</label>
+                                                <div class="col-sm-8">
+                                                    <!--<input class="form-control" id="test3" placeholder=""
+                                                           style="width: 100%" type="text" v-model="elem.startdate">-->
+                                                    <el-date-picker class="form-control00"
+                                                                    placeholder="选择日期"
+                                                                    style="width: 100%;height: 34px"
+                                                                    type="date"
+                                                                    value-format="yyyy-MM-dd"
+                                                                    v-model="elem.startdate">
+                                                    </el-date-picker>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">到期日</label>
+                                                <div class="col-sm-8">
+                                                    <!--<input class="form-control" id="test2" placeholder=""
+                                                           style="width: 100%" type="text" v-model="elem.enddate">-->
+                                                    <el-date-picker class="form-control00"
+                                                                    placeholder="选择日期"
+                                                                    style="width: 100%;height: 34px"
+                                                                    type="date"
+                                                                    value-format="yyyy-MM-dd"
+                                                                    v-model="elem.enddate">
+                                                    </el-date-picker>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">产品类型</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" style="width: 100%"
+                                                           type="text" v-model="elem.type">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">运作模式</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" style="width: 100%"
+                                                           type="text" v-model="elem.opermode">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!--============-->
+                                        <div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <label class="col-sm-4 control-label"
+                                                       style="width: 33%;margin-left: 0">到期提醒</label>
+                                                <div class="radio-beauty-container" :id="'dqtx'+index"
+                                                     style="width: 100%">
+                                                    <label>
+                                                        <span class="radio-name">是</span>
+                                                        <input checked hidden :id="'dqtxs'+index" :name="'dqtxs'+index"
+                                                               type="radio" value="是"
+                                                               v-model="elem.reserve1"/>
+                                                        <label class="radio-beauty" :for="'dqtxs'+index"></label>
+                                                    </label>
+                                                    <label>
+                                                        <span class="radio-name">否</span>
+                                                        <input hidden :id="'dqtxf'+index" :name="'dqtxf'+index"
+                                                               type="radio" value="否"
+                                                               v-model="elem.reserve1"/>
+                                                        <label class="radio-beauty" :for="'dqtxf'+index"></label>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                                <!--<label class="col-sm-4 control-label" style="width: 33%;margin-left: 0">家庭住址</label>
+                                                <div class="col-sm-8">
+                                                    <input  class="form-control" style="width: 100%"
+                                                            type="text">
+                                                </div>-->
+                                            </div>
+                                        </div>
+                                        <!--============-->
+
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <!--管理员自定义字段-->
+                        <fieldset class="layui-elem-field" v-if="form.adminprop.length!=0">
+                            <legend style="width: 160px">管理员扩展属性</legend>
+                            <div v-for="(elem,index) in form.adminprop">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"
+                                           style="margin-left: -10%">{{elem.propname}}</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control" style="width: 105%"
+                                               type="text" v-model="elem.propvalue">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!--用户自定义字段-->
+                        <fieldset class="layui-elem-field">
+                            <legend style="width: 260px">用户扩展属性<span v-show="isEdit||isAdd"
+                                                                     @click="addcustprop('true')"
+                                                                     style="color: red;font-size: 10px"
+                            >&nbsp;&nbsp;新增属性</span><span v-show="isEdit||isAdd"
+                                                          @click="addcustprop('false')"
+                                                          style="color: red;font-size: 10px"
+                            >&nbsp;&nbsp;删除属性</span></legend>
+                            <div v-for="(elem,index) in form.custprop">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" style="margin-left: -0%">属性{{index+1}}</label>
+                                    <div class="col-sm-4">
+                                        <input class="form-control" style="width: 90%"
+                                               type="text" :placeholder="'字段名'+(index+1)" v-model="elem.propname">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input class="form-control" style="width: 90%"
+                                               type="text" :placeholder="'字段内容'+(index+1)" v-model="elem.propvalue">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        </fieldset>
+                        <div class="form-group" v-show="isEdit||isAdd">
+                            <div class="col-sm-12">
+                                <button @click="submit()" class="btn btn-primary"
+                                        style="display:block;margin:0 auto" onclick="return false;">提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    var context = [[@{/}]];
+    var custid0 = [[${custid}]];
+    var isEdit = [[${isEdit}]];
+    var isAdd = [[${isAdd}]];
+    var adminItem = [[${adminItem}]];
+    //console.log(adminItem);
+</script>
+<script th:src="@{/static/js/jquery.1.12.4.min.js}"></script>
+<script th:src="@{/static/js/sha256.js}"></script>
+<script th:src="@{/static/js/jquery.validate.min.js}"></script>
+<script th:src="@{/static/js/messages_zh.min.js}"></script>
+<script th:src="@{/static/js/layui/layui.js}"></script>
+<script th:src="@{/static/js/layui/lay/modules/layer.js}"></script>
+<script th:src="@{/static/js/vue.2.6.11.js}"></script>
+<script th:src="@{/static/js/element-ui.2.13.0.js}"></script>
+<!--<script th:src="@{/static/js/modules/user/addUser.js}"></script>-->
+
+<script>
+
+    /*layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        //console.log(JSON.stringify(laydate));
+        //常规用法
+        laydate.render({
+            elem: '#test1',
+            calendar: true
+        })
+
+        laydate.render({
+            elem: '#test2',
+            calendar: true
+        })
+
+        laydate.render({
+            elem: '#test3',
+            calendar: true
+        })
+
+        laydate.render({
+            elem: '#test4',
+            calendar: true
+        })
+    });*/
+
+    //console.log(context);
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            form: {
+                familyinfo: [{
+                    relation: '',
+                    name: '',
+                    birth: '',
+                    note: ''
+                }],
+                productinfo: [{
+                    pid: '',
+                    name: '',
+                    amt: '',
+                    quotient: '',//份额
+                    startdate: '',
+                    enddate: '',
+                    type: '',
+                    opermode: '',//运作模式
+                    reserve1: '否'
+                }],
+                adminprop: [],
+                custprop: [],
+                baseinfo: {
+                    marketer: '',
+                    custid: '',
+                    cino: '',
+                    name: '',
+                    sex: '',
+                    birth: '',
+                    workunit: '',
+                    position: '',
+                    enterpriseprop: '',
+                    industrytype: '',
+                    homeaddr: '',
+                    carbrand: '',
+                    carno: '',
+                    worktel: '',
+                    hometel: '',
+                    phone1: '',
+                    phone2: '',
+                    email: '',
+                    wxno: '',
+                    iscontroler: '',
+                    characterdesc: '',
+                    incomestate: '',
+                    hobby: '',
+                    interest: '',
+                    problem: '',
+                    financialprefer: '',
+                    businessperfer: ''
+                }
+            },
+            isEdit: false,
+            isAdd: false
+        },
+        methods: {
+            addfamily: function (index, flag) {
+                console.log('addfamily--index:' + index);
+                //this.form.familyinfo.push(tmp);
+                if (flag == 'true') {
+                    var tmp = {};
+                    tmp.relation = '';
+                    tmp.name = '';
+                    tmp.birth = '';
+                    tmp.note = '';
+                    this.form.familyinfo.splice(index + 1, 0, tmp);
+                } else {
+                    if (this.form.familyinfo.length > 1)//保证至少剩一条信息
+                        this.form.familyinfo.splice(index, 1);
+                }
+                setTimeout(function () {
+                    $('.el-input__inner').css("height", '34px')
+                }, 500);
+            },
+            addproduct: function (index, flag) {
+                console.log('addproduct--index:' + index);
+                if (flag == 'true') {
+                    var tmp = {};
+                    tmp.name = '';
+                    tmp.amt = '';
+                    tmp.quotient = '';
+                    tmp.startdate = '';
+                    tmp.enddate = '';
+                    tmp.type = '';
+                    tmp.opermode = '';
+                    tmp.pid = '';
+                    tmp.reserve1 = '否';
+                    this.form.productinfo.splice(index + 1, 0, tmp);
+                    console.log(JSON.stringify(this.form.productinfo));
+                } else {
+                    if (this.form.productinfo.length > 1)//保证至少剩一条信息
+                        this.form.productinfo.splice(index, 1);
+                }
+                setTimeout(function () {
+                    $('.el-input__inner').css("height", '34px')
+                }, 500);
+            },
+            addcustprop: function (flag) {
+                if (flag == 'true') {
+                    if (this.form.custprop.length >= 5) {
+                        layer.alert('您最多只能添加5个自定义属性');
+                        return;
+                    }
+                    var tmp = {};
+                    tmp.propname = '';
+                    tmp.propvalue = '';
+                    this.form.custprop.push(tmp);
+                } else {
+                    this.form.custprop.pop();
+                }
+            },
+            submit: function (index) {
+                console.log(JSON.stringify(this.form));
+                var data = this.form;
+                $.ajax({
+                    cache: true,
+                    type: "POST",
+                    url: context + 'pbcust/updateCustInfo',
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    error: function (request) {
+                        parent.layer.alert("Connection error");
+                    },
+                    success: function (data) {
+                        console.log(JSON.stringify(data));
+                        if (data.code === 200) {
+                            parent.layer.msg("操作成功");
+                            var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                            parent.layer.close(index);
+                        } else {
+                            parent.layer.alert(data.message);
+                        }
+                    }
+                });
+            }
+        },
+        mounted: function () {
+            //统一两种框架的风格
+            $('.el-input__inner').css("height", '34px');
+            this.isEdit = isEdit;
+            this.isAdd = isAdd;
+            var thisform = this.form;
+            console.log('init data');
+            if (isAdd) {
+                this.form.adminprop = adminItem;
+                return;
+                //如果是新增则不拉取数据
+            }
+            $.ajax({
+                cache: true,
+                type: "GET",
+                url: context + 'pbcust/getDetailInfo?custid=' + custid0,
+                error: function (request) {
+                    parent.layer.alert("Connection error");
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code === 200) {
+                        thisform.baseinfo = data.data.baseinfo;
+                        thisform.familyinfo = data.data.familyinfo;
+                        thisform.productinfo = data.data.productinfo;
+                        thisform.adminprop = data.data.adminprop;
+                        thisform.custprop = data.data.custprop;
+
+                        if (isEdit && thisform.familyinfo.length == 0) {
+                            thisform.familyinfo = [{
+                                relation: '',
+                                name: '',
+                                birth: '',
+                                note: ''
+                            }]
+
+                        }
+                        if (isEdit && thisform.productinfo.length == 0) {
+                            thisform.productinfo = [{
+                                pid: '',
+                                name: '',
+                                amt: '',
+                                quotient: '',//份额
+                                startdate: '',
+                                enddate: '',
+                                type: '',
+                                opermode: ''//运作模式
+                            }]
+                        }
+
+                        //设置只读
+                        setTimeout(function () {
+                            if (!isEdit) {
+                                $('.form-horizontal').find('.el-date-picker').attr('disabled', "disabledEdit");
+                                $('.form-horizontal').find('input,textarea,.el-date-picker').attr('readonly', true);
+                                $('.form-horizontal').find('input,textarea,select').attr('disabled', true);
+                                $('.form-horizontal').find('.el-input__inner,select').css('background-color', '#eee');
+                            }
+                        }, 500)
+                        setTimeout(function () {
+                            $('.el-input__inner').css("height", '34px')
+                        }, 500);
+                    }
+                }
+            });//ajax
+        }, computed: {
+            getAge: function () {
+                try {
+                    var tmp = new Date().getFullYear() - new Date(this.form.baseinfo.birth).getFullYear();
+                    return isNaN(tmp) ? '' : tmp;
+                } catch (e) {
+                    return '';
+                }
+            }
+        }
+    });
+
+    /*
+    {"familyinfo":[{"relation":"父母","name":"父母姓名","birth":"2020-03-01T16:00:00.000Z","note":"父母备足"},{"relation":"配偶","name":"配偶姓名","birth":"2020-03-30T16:00:00.000Z","note":"配偶备注"}],"productinfo":[{"pid":"产品代码1","name":"产品名称1","amt":"金额1","quotient":"份额1","startdate":"2020-03-09T16:00:00.000Z","enddate":"2020-03-10T16:00:00.000Z","type":"产品类型1","opermode":"运作模式1"},{"name":"产品名称2","amt":"金额2","quotient":"份额2","startdate":"2020-03-24T16:00:00.000Z","enddate":"2020-03-25T16:00:00.000Z","type":"产品类型2","opermode":"运作模式2","pid":"产品代码2"}],"adminprop":[{"propname":"测试属性1","propvalue":"测试值1"},{"propname":"测试属性2","propvalue":"测试值2"}],"custprop":[{"propname":"扩展1","propvalue":"扩展内容1"},{"propname":"扩展2","propvalue":"扩展内容2"}]}
+     */
+</script>
+
+</body>
+</html>
